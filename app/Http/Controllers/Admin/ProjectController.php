@@ -7,6 +7,7 @@ use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Profession;
+use App\Models\Technology;
 use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
@@ -31,7 +32,8 @@ class ProjectController extends Controller
     public function create()
     {
         $professions = Profession::all();
-        return view('admin.projects.create', compact('professions'));
+        $technologies = Technology::all();
+        return view('admin.projects.create', compact('professions', 'technologies'));
     }
 
     /**
@@ -51,6 +53,11 @@ class ProjectController extends Controller
         }
 
         $project = Project::create($val_data);
+
+        if ($request ->has('technologies')) {
+            $project ->technologies()->attach($val_data['technologies']);
+        }
+
         return redirect()->route('admin.projects.index')->with('message', "The new project $project->title  was added with succes");
     }
 
@@ -74,7 +81,8 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $professions = Profession::all();
-        return view('admin.projects.edit', compact('project', 'profession'));
+        $technologies = Technology::all();
+        return view('admin.projects.edit', compact('project', 'profession', 'technologies'));
     }
 
     /**

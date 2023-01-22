@@ -27,7 +27,8 @@ class StoreProjectRequest extends FormRequest
             'profession_id' => ['nullable', 'exists:professions,id'],
             'title' => ['required', 'max:150', 'unique:projects'],
             'content' => ['nullable'],
-            'cover_image' => ['nullable', 'image', 'max:512']
+            'cover_image' => ['nullable', 'image', 'max:512'],
+            'technologies' =>['exists:technologies,id']
         ];
     }
 
